@@ -2,9 +2,12 @@ package com.eazybytes.accounts.controller;
 
 import com.eazybytes.accounts.constants.AccountsConstants;
 import com.eazybytes.accounts.dto.CustomerDto;
+import com.eazybytes.accounts.dto.ErrorResponseDto;
 import com.eazybytes.accounts.dto.ResponseDto;
 import com.eazybytes.accounts.service.IAccountsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -67,8 +70,11 @@ public class AccountsController {
                     description = "Http Status Ok"
             ),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "Http Status Internal Server Error"
+                    responseCode = "417",
+                    description = "Http Status Update failed error",
+                    content = @Content(
+                            schema = @Schema(implementation = ErrorResponseDto.class)
+                    )
             )
             })
     @PutMapping("/update")
@@ -77,8 +83,8 @@ public class AccountsController {
         if(isUpdated) {
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500)
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.UPDATE_MESSAGE_417)
             );
         }
     }
@@ -93,8 +99,8 @@ public class AccountsController {
                     description = "Http Status Deleted"
             ),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "Http Status Internal Server Error"
+                    responseCode = "417",
+                    description = "Http Status Deletion Failed"
             )
     })
     @DeleteMapping("/delete")
@@ -105,8 +111,8 @@ public class AccountsController {
                     new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200)
             );
         }else{
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new ResponseDto(AccountsConstants.STATUS_500, AccountsConstants.MESSAGE_500));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(
+                    new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.DELETE_MESSAGE_417));
         }
     }
 }
