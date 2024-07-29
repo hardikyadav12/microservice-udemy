@@ -1,0 +1,17 @@
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+sudo systemctl status docker
+
+docker build . -t hardikyadav12/accounts:s4
+
+docker images
+
+docker inspect image 23521
+
+docker run -p 8080:8080 hardikyadav12/accounts:s4
+
+docker run -d -p 8080:8080 hardikyadav12/accounts:s4
+
+docker ps
